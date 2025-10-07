@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using MelonLoader;
+using System.Runtime.InteropServices;
 
 namespace StellarV3External.SDK
 {
@@ -37,6 +38,7 @@ namespace StellarV3External.SDK
                 Console.ForegroundColor = ConsoleColor.Gray;
 
             Console.WriteLine("[" + type.ToString() + "]" + " ~ " + message);
+            MelonLogger.Msg("[" + type.ToString() + "]" + " ~ " + message);
             Console.ResetColor();
         }
     }
