@@ -24,7 +24,7 @@ namespace StellarV3External.SDK.Utils
 
         public static void CloneAvatar(string avatar_id)
         {
-            PageAvatar.Method_Public_Static_Void_ApiAvatar_String_PDM_0(new ApiAvatar
+            PageAvatar.Method_Public_Static_Void_ApiAvatar_String_0(new ApiAvatar
             {
                 id = avatar_id
             });

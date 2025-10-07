@@ -31,7 +31,7 @@ namespace StellarV3External.SDK.Patching
             try //On Player Join
             {
                 DoPatch(
-                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_1)),
+                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_PDM_2)),
                     GetPatchMethod(nameof(OnPlayerJoinPatch))
                 );
                 Logging.Log("OnPlayerJoin patch applied successfully.", LType.Success);
@@ -44,7 +44,7 @@ namespace StellarV3External.SDK.Patching
             try //On Player Leave
             {
                 DoPatch(
-                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_2)),
+                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_0)),
                     GetPatchMethod(nameof(OnPlayerLeavePatch))
                 );
                 Logging.Log("OnPlayerLeave patch applied successfully.", LType.Success);
