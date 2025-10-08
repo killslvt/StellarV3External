@@ -5,7 +5,7 @@ namespace StellarV3External.SDK.Utils
 {
     internal class PopupUtils
     {
-        public static void HudMessage(string content, string description = null, float duration = 5f)
+        public static void HudMessage(string content, string? description = null, float duration = 5f)
         {
             LocalizableString title = LocalizableStringExtensions.Localize(content, null, null, null);
             LocalizableString desc = description != null ? LocalizableStringExtensions.Localize(description, null, null, null) : null;

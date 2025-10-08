@@ -1,4 +1,5 @@
 ﻿using Il2Cpp;
+using Il2CppVRC.SDKBase;
 using StellarV3External.Features.Movement;
 using StellarV3External.SDK.Utils;
 using UnityEngine;
@@ -48,6 +49,8 @@ namespace StellarV3External.Menus
         public static bool speedHack;
 
         private static NeckRange neck;
+
+        public static float JumpMultiplier { get; set; } = 5f;
 
         private static bool wasGroundedLastFrame = true;
 
@@ -140,6 +143,21 @@ namespace StellarV3External.Menus
                 player.GetComponent<GamelikeInputController>().field_Protected_NeckMouseRotator_0.field_Public_NeckRange_0 = neck;
                 PopupUtils.HudMessage("Head Flipper", "Toggled Off", 3);
             }, () => HeadFlipper, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Force Jump", () =>
+            {
+                Networking.LocalPlayer.SetJumpImpulse(JumpMultiplier);
+                PopupUtils.HudMessage("Movement", "Enabled Force Jump", 3f);
+            }, yOffset);
+
+            yOffset += 35;
+
+            new GUISlider("Jump Impulse", JumpMultiplier, 1f, 100f, yOffset, (value) =>
+            {
+                JumpMultiplier = value;
+            });
 
             yOffset += 35;
         }

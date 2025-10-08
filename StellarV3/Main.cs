@@ -68,11 +68,12 @@ public class Main : MelonMod
 
     public override void OnUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Insert))
+        if (Input.GetKeyDown(KeyCode.Insert) || Input.GetKeyDown(KeyCode.F5))
             ToggleMenu();
 
         MovementGUI.Update();
     }
+
 
     public override void OnGUI()
     {
@@ -101,8 +102,9 @@ public class Main : MelonMod
             richText = true
         };
 
-        GUI.Label(new Rect(10, 10, 300, 30), $"<b>Stellar V3 Made By 4gottenmemory</b>", textStyle);
+        GUI.Label(new Rect(10, 10, 300, 30), $"<b>Stellar V3</b>", textStyle);
         GUI.Label(new Rect(10, 30, 300, 30), $"<b>User: {username}</b>", textStyle);
+        GUI.Label(new Rect(10, 50, 300, 30), $"<b>Made By 4gottenmemory</b>", textStyle);
     }
 
     public static void MainGUI()
@@ -122,7 +124,7 @@ public class Main : MelonMod
         {
             GUI.backgroundColor = Color.black;
             GUI.contentColor = Color.white;
-            string label = (selectedTab == i) ? $"[{tabNames[i]}]" : tabNames[i];
+            string label = (selectedTab == i) ? $"<color=gray><b>{tabNames[i]}</b></color>" : tabNames[i];
             if (GUI.Button(new Rect(20 + i * (tabWidth + tabSpacing), 40, tabWidth, tabHeight), label))
                 selectedTab = i;
         }
@@ -209,23 +211,39 @@ public class Main : MelonMod
 
     private static void ResizeHelper()
     {
-        var assembly = typeof(Main).Assembly;
-        using (var stream = assembly.GetManifestResourceStream("Singularity.SyvoaLogo.png"))
-        {
-            if (stream != null)
-            {
-                byte[] buffer = new byte[stream.Length];
-                stream.Read(buffer, 0, buffer.Length);
+        int size = 12;
+        resizeIcon = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        resizeIcon.wrapMode = TextureWrapMode.Clamp;
 
-                resizeIcon = new Texture2D(5, 5, TextureFormat.RGBA32, false);
-                ImageConversion.LoadImage(resizeIcon, buffer, false);
-            }
-            else
+        Color transparent = new Color(0, 0, 0, 0);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
             {
-                MelonLogger.Warning("Failed to load resize icon from embedded resources.");
+                resizeIcon.SetPixel(x, y, transparent);
             }
         }
+
+        Color lineColor = new Color(1f, 1f, 1f, 0.7f);
+        for (int i = 0; i < size; i += 3)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                int x = size - i - j - 1;
+                if (x >= 0 && x < size)
+                {
+                    for (int y = size - i - j - 1; y < size; y++)
+                    {
+                        if (y >= 0 && y < size)
+                            resizeIcon.SetPixel(x, y, lineColor);
+                    }
+                }
+            }
+        }
+
+        resizeIcon.Apply();
     }
+
     #endregion
 
     #endregion
