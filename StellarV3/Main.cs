@@ -8,7 +8,7 @@ using Il2CppVRC.Core;
 using VRC;
 
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.0.0", "4gottenmemory/Swiss", "https://discord.gg/Js5HJaWX2S")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.0.2", "Swiss", "https://discord.gg/Js5HJaWX2S")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod

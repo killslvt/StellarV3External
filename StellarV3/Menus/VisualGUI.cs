@@ -6,10 +6,7 @@ namespace StellarV3External.Menus
 {
     internal class VisualGUI
     {
-        private static bool capESP = false;
-        
         private static int yOffset = 0;
-
 
         public static void Menu()
         {

@@ -6,7 +6,7 @@ namespace StellarV3External.SDK.Patching
 {
     internal static class Patch
     {
-        public static readonly HarmonyLib.Harmony Instance = new HarmonyLib.Harmony("ClientBase");
+        public static readonly HarmonyLib.Harmony Instance = new HarmonyLib.Harmony("StellarV3");
 
         private static HarmonyMethod GetPatchMethod(string methodName)
         {
