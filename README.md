@@ -21,7 +21,7 @@ All references can be found inside:
 ---
 
 ## Links  
-Join the Discord: [Fail Society](https://discord.gg/Js5HJaWX2S)  
+Join the Discord: [Support Server](https://discord.gg/myuWgYP8WS)  
 
 ---
 
