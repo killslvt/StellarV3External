@@ -14,7 +14,7 @@ namespace StellarV3External.SDK
         public static void InitConsole()
         {
             AllocConsole();
-            Console.Title = "Stellar V3 Console | Made By Swiss/4gottenmemory";
+            Console.Title = "Stellar V3 Console | Made By 4gottenmemory";
             Log("Console initialized.", LType.Success);
         }
 

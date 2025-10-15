@@ -8,7 +8,7 @@ using Il2CppVRC.Core;
 using VRC;
 
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.0.3", "Swiss", "https://discord.gg/Js5HJaWX2S")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.0.4", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -41,7 +41,7 @@ public class Main : MelonMod
         Logging.Log("Loading ClientBase", LType.Info);
         MelonCoroutines.Start(WaitForUser());
 
-        Logging.Log("Join The Discord: https://discord.gg/Js5HJaWX2S", LType.Info);
+        Logging.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info);
     }
 
     private static IEnumerator WaitForUser()
@@ -112,7 +112,7 @@ public class Main : MelonMod
         if (!showMenu) return;
 
         GUI.backgroundColor = Color.black;
-        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)DrawWindow, "<color=#FFFFFF>Stellar V3</color>  <color=#FFFFFF>https://discord.gg/Js5HJaWX2S</color>");
+        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)DrawWindow, "<color=#FFFFFF>Stellar V3</color>  <color=#FFFFFF>https://discord.gg/myuWgYP8WS</color>");
     }
 
     private static void DrawWindow(int id)

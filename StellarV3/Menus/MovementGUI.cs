@@ -22,11 +22,11 @@ namespace StellarV3External.Menus
 
             if (Input.GetKey(KeyCode.Space))
             {
-                if (Jetpack)
+                if (jetPack)
                 {
                     Jump(PlayerUtils.LocalPlayer().prop_VRCPlayerApi_0.GetJumpImpulse());
                 }
-                else if (BunnyHop && isGrounded)
+                else if (bunnyHop && isGrounded)
                 {
                     Jump(PlayerUtils.LocalPlayer().prop_VRCPlayerApi_0.GetJumpImpulse());
                 }
@@ -43,10 +43,11 @@ namespace StellarV3External.Menus
         }
         #endregion
 
-        public static bool Jetpack;
-        public static bool BunnyHop;
-        public static bool HeadFlipper;
+        public static bool jetPack;
+        public static bool bunnyHop;
+        public static bool headFlipper;
         public static bool speedHack;
+        public static bool ghostmode;
 
         private static NeckRange neck;
 
@@ -62,27 +63,27 @@ namespace StellarV3External.Menus
 
             new GUIToggleButton("Bunny Hop", () =>
             {
-                BunnyHop = true;
+                bunnyHop = true;
                 PopupUtils.HudMessage("Bunny Hop", "Toggled On", 3);
             },
             () =>
             {
-                BunnyHop = false;
+                bunnyHop = false;
                 PopupUtils.HudMessage("Bunny Hop", "Toggled Off", 3);
-            }, () => BunnyHop, yOffset);
+            }, () => bunnyHop, yOffset);
 
             yOffset += 35;
 
             new GUIToggleButton("Jetpack", () =>
             {
-                Jetpack = true;
+                jetPack = true;
                 PopupUtils.HudMessage("Inf Jump", "Toggled On", 3);
             },
             () =>
             {
-                Jetpack = false;
+                jetPack = false;
                 PopupUtils.HudMessage("Inf Jump", "Toggled Off", 3);
-            }, () => Jetpack, yOffset);
+            }, () => jetPack, yOffset);
 
             yOffset += 35;
 
@@ -130,7 +131,7 @@ namespace StellarV3External.Menus
 
             new GUIToggleButton("Head Flipper", () =>
             {
-                HeadFlipper = true;
+                headFlipper = true;
                 Player player = Player.prop_Player_0;
                 neck = player.GetComponent<GamelikeInputController>().field_Protected_NeckMouseRotator_0.field_Public_NeckRange_0;
                 player.GetComponent<GamelikeInputController>().field_Protected_NeckMouseRotator_0.field_Public_NeckRange_0 = new NeckRange(float.MinValue, float.MaxValue, 0f);
@@ -138,11 +139,30 @@ namespace StellarV3External.Menus
             },
             () =>
             {
-                HeadFlipper = false;
+                headFlipper = false;
                 Player player = Player.prop_Player_0;
                 player.GetComponent<GamelikeInputController>().field_Protected_NeckMouseRotator_0.field_Public_NeckRange_0 = neck;
                 PopupUtils.HudMessage("Head Flipper", "Toggled Off", 3);
-            }, () => HeadFlipper, yOffset);
+            }, () => headFlipper, yOffset);
+
+            yOffset += 35;
+
+            new GUIToggleButton("Ghost Mode", () =>
+            {
+                ghostmode = true;
+                var localPlayer = Networking.LocalPlayer;
+                var serializer = localPlayer.gameObject.GetComponent<VRC.Networking.FlatBufferNetworkSerializer>();
+                serializer.enabled = false;
+                PopupUtils.HudMessage("Ghost Mode", "Toggled On", 3);
+            },
+            () =>
+            {
+                ghostmode = false;
+                var localPlayer = Networking.LocalPlayer;
+                var serializer = localPlayer.gameObject.GetComponent<VRC.Networking.FlatBufferNetworkSerializer>();
+                serializer.enabled = true;
+                PopupUtils.HudMessage("Ghost Mode", "Toggled Off", 3);
+            }, () => ghostmode, yOffset);
 
             yOffset += 35;
 
