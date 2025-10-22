@@ -1,6 +1,9 @@
 ﻿using HarmonyLib;
-using System.Reflection;
 using Il2Cpp;
+using Il2CppBestHTTP.Logger;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppZLogger;
+using System.Reflection;
 
 namespace StellarV3External.SDK.Patching
 {
@@ -53,7 +56,34 @@ namespace StellarV3External.SDK.Patching
             {
                 Logging.Log("[Patch Error] Failed to patch OnPlayerLeave:\n" + ex, LType.Error);
             }
+
+            try //ZLogger Spam Removal (Credit: catnotadog https://discord.gg/fXVn2JJyuA)
+            {
+                DoPatch(
+                typeof(Il2CppVRC.Core.VRCLogger).GetMethod(
+                    nameof(Il2CppVRC.Core.VRCLogger.Log),
+                    new Type[] { typeof(ILogger), typeof(ZLoggerDebugInterpolatedStringHandler) }
+                ),
+                GetPatchMethod(nameof(StopSpam))
+            );
+
+                DoPatch(
+                    typeof(Il2CppVRC.Core.ZLoggerHandlerLogger).GetMethod(
+                        nameof(Il2CppVRC.Core.ZLoggerHandlerLogger.LogFormat),
+                        new[] { typeof(UnityEngine.LogType), typeof(UnityEngine.Object), typeof(string), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) }
+                    ),
+                    GetPatchMethod(nameof(StopSpam))
+                );
+
+                Logging.Log("Console Spam patch applied successfully.", LType.Success);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("[Patch Error] Failed to patch Console Spam:\n" + ex, LType.Error);
+            }
         }
+
+        internal static bool StopSpam() => false;
 
         #region OnPlayerJoin/Leave
         private static void OnPlayerJoinPatch(VRC.Player __0)

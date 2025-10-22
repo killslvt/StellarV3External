@@ -140,6 +140,12 @@
     <Reference Include="Il2CppVRCSDKBase">
       <HintPath>Refs\Managed\Il2CppVRCSDKBase.dll</HintPath>
     </Reference>
+    <Reference Include="Il2CppZLinq">
+      <HintPath>Refs\Managed\Il2CppZLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppZLogger">
+      <HintPath>Refs\Managed\Il2CppZLogger.dll</HintPath>
+    </Reference>
     <Reference Include="MelonLoader">
       <HintPath>Refs\MelonLoader.dll</HintPath>
     </Reference>

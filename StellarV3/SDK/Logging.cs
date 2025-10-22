@@ -1,21 +1,42 @@
 ﻿using MelonLoader;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace StellarV3External.SDK
 {
     internal static class Logging
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool AllocConsole();
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetConsoleWindow();
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool FreeConsole();
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private const int SW_HIDE = 0;
+        private const int SW_SHOW = 5;
 
         public static void InitConsole()
         {
-            AllocConsole();
-            Console.Title = "Stellar V3 Console | Made By 4gottenmemory";
-            Log("Console initialized.", LType.Success);
+            var consoleHandle = GetConsoleWindow();
+            if (consoleHandle != IntPtr.Zero)
+                ShowWindow(consoleHandle, SW_HIDE);
+
+            string logReaderPath = Path.Combine(Environment.CurrentDirectory, "ConsoleLogs.exe");
+            if (File.Exists(logReaderPath))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = logReaderPath,
+                    UseShellExecute = true
+                });
+            }
+            else
+            {
+                MelonLogger.Msg("[Error] ~ ConsoleLogs.exe not found at: " + logReaderPath);
+            }
+
+
+            Log("ConsoleLogs.exe launched, original console hidden.", LType.Success);
         }
 
         public static void Log(string message, LType type = LType.Info)
