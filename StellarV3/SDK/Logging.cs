@@ -15,6 +15,8 @@ namespace StellarV3External.SDK
         private const int SW_HIDE = 0;
         private const int SW_SHOW = 5;
 
+        private const string ConsoleLogsUrl = "https://github.com/killslvt/StellarV3External/releases/download/ConsoleLogs/ConsoleLogs.exe";
+
         public static void InitConsole()
         {
             var consoleHandle = GetConsoleWindow();
@@ -22,21 +24,43 @@ namespace StellarV3External.SDK
                 ShowWindow(consoleHandle, SW_HIDE);
 
             string logReaderPath = Path.Combine(Environment.CurrentDirectory, "ConsoleLogs.exe");
-            if (File.Exists(logReaderPath))
+
+            if (!File.Exists(logReaderPath))
+            {
+                MelonLogger.Msg("[Info] ~ ConsoleLogs.exe not found. Attempting to download...");
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var data = client.GetByteArrayAsync(ConsoleLogsUrl).GetAwaiter().GetResult();
+                        File.WriteAllBytes(logReaderPath, data);
+                        MelonLogger.Msg("[Success] ~ ConsoleLogs.exe downloaded successfully.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MelonLogger.Msg("[Error] ~ Failed to download ConsoleLogs.exe: " + e.Message);
+                    if (consoleHandle != IntPtr.Zero)
+                        ShowWindow(consoleHandle, SW_SHOW);
+                    return;
+                }
+            }
+
+            try
             {
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = logReaderPath,
                     UseShellExecute = true
                 });
+                Log("ConsoleLogs.exe launched, original console hidden.", LType.Success);
             }
-            else
+            catch (Exception e)
             {
-                MelonLogger.Msg("[Error] ~ ConsoleLogs.exe not found at: " + logReaderPath);
+                MelonLogger.Msg("[Error] ~ Failed to launch ConsoleLogs.exe: " + e.Message);
+                if (consoleHandle != IntPtr.Zero)
+                    ShowWindow(consoleHandle, SW_SHOW);
             }
-
-
-            Log("ConsoleLogs.exe launched, original console hidden.", LType.Success);
         }
 
         public static void Log(string message, LType type = LType.Info)
