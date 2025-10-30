@@ -20,12 +20,18 @@ namespace StellarV3External.SDK
         public static void InitConsole()
         {
             var consoleHandle = GetConsoleWindow();
-            if (consoleHandle != IntPtr.Zero)
-                ShowWindow(consoleHandle, SW_HIDE);
+            string consoleLogPath = Path.Combine(Environment.CurrentDirectory, "ConsoleLogs.exe");
+            string clarityPath = Path.Combine(Environment.CurrentDirectory, "Plugins", "Clarity.dll");
 
-            string logReaderPath = Path.Combine(Environment.CurrentDirectory, "ConsoleLogs.exe");
+            if (File.Exists(clarityPath))
+            {
+                MelonLogger.Msg("[Info] ~ Clarity.dll found. Skipping custom console initialization.");
+                return;
+            }
 
-            if (!File.Exists(logReaderPath))
+            ShowWindow(consoleHandle, SW_HIDE);
+
+            if (!File.Exists(consoleLogPath))
             {
                 MelonLogger.Msg("[Info] ~ ConsoleLogs.exe not found. Attempting to download...");
                 try
@@ -33,15 +39,14 @@ namespace StellarV3External.SDK
                     using (var client = new HttpClient())
                     {
                         var data = client.GetByteArrayAsync(ConsoleLogsUrl).GetAwaiter().GetResult();
-                        File.WriteAllBytes(logReaderPath, data);
+                        File.WriteAllBytes(consoleLogPath, data);
                         MelonLogger.Msg("[Success] ~ ConsoleLogs.exe downloaded successfully.");
                     }
                 }
                 catch (Exception e)
                 {
                     MelonLogger.Msg("[Error] ~ Failed to download ConsoleLogs.exe: " + e.Message);
-                    if (consoleHandle != IntPtr.Zero)
-                        ShowWindow(consoleHandle, SW_SHOW);
+                    ShowWindow(consoleHandle, SW_SHOW);
                     return;
                 }
             }
@@ -50,7 +55,7 @@ namespace StellarV3External.SDK
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = logReaderPath,
+                    FileName = consoleLogPath,
                     UseShellExecute = true
                 });
                 Log("ConsoleLogs.exe launched, original console hidden.", LType.Success);
