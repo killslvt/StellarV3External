@@ -1,14 +1,15 @@
-﻿using MelonLoader;
+﻿using ClarityLib;
+using Il2CppVRC.Core;
+using MelonLoader;
+using StellarV3.Features.Movement;
 using StellarV3External.Features.Visuals;
 using StellarV3External.Menus;
 using StellarV3External.SDK;
 using System.Collections;
 using UnityEngine;
-using Il2CppVRC.Core;
 using VRC;
 
-
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.0.7", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.0.9", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -33,15 +34,16 @@ public class Main : MelonMod
 
     public override void OnApplicationStart()
     {
+        Logs.Initialize();
         Logging.InitConsole();
 
-        Logging.Log("Init Patches", LType.Info);
+        ClarityLib.Logs.Log("Init Patches", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         Task.Run(() => StellarV3External.SDK.Patching.Patch.Init());
 
-        Logging.Log("Loading ClientBase", LType.Info);
+        ClarityLib.Logs.Log("Loading StellarV3", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         MelonCoroutines.Start(WaitForUser());
 
-        Logging.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info);
+        ClarityLib.Logs.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
     }
 
     private static IEnumerator WaitForUser()
@@ -51,19 +53,24 @@ public class Main : MelonMod
 
         VRCUserName = APIUser.CurrentUser.displayName;
 
-        Logging.Log("Waiting for Canvas_QuickMenu(Clone)", LType.Info);
+        ClarityLib.Logs.Log("Waiting for Canvas_QuickMenu(Clone)", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         while (Camera.main == null || GameObject.Find("Canvas_QuickMenu(Clone)") == null)
             yield return null;
 
-        Logging.Log("Quick Menu found", LType.Info);
-        GameObject gameObject1 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_Dashboard/ScrollRect/Viewport/VerticalLayoutGroup/Carousel_Banners");
-        GameObject gameObject2 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_Dashboard/ScrollRect/Viewport/VerticalLayoutGroup/VRC+_Banners");
-        GameObject gameObject3 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/Page_Buttons_QM/HorizontalLayoutGroup/Page_VRCPlus");
-        GameObject gameObject4 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/Page_Buttons_QM/HorizontalLayoutGroup/Page_VRCPlusExperiment");
-        UnityEngine.Object.DestroyImmediate(gameObject1);
-        UnityEngine.Object.DestroyImmediate(gameObject2);
-        UnityEngine.Object.DestroyImmediate(gameObject3);
-        UnityEngine.Object.DestroyImmediate(gameObject4);
+        ClarityLib.Logs.Log("Quick Menu found", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        if (GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_Dashboard"))
+        {
+            ClarityLib.Logs.Log("Cleaning QM", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+            GameObject gameObject1 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_Dashboard/ScrollRect/Viewport/VerticalLayoutGroup/Carousel_Banners");
+            GameObject gameObject2 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_Dashboard/ScrollRect/Viewport/VerticalLayoutGroup/VRC+_Banners");
+            GameObject gameObject3 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/Page_Buttons_QM/HorizontalLayoutGroup/Page_VRCPlus");
+            GameObject gameObject4 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/Page_Buttons_QM/HorizontalLayoutGroup/Page_VRCPlusExperiment");
+            UnityEngine.Object.DestroyImmediate(gameObject1);
+            UnityEngine.Object.DestroyImmediate(gameObject2);
+            UnityEngine.Object.DestroyImmediate(gameObject3);
+            UnityEngine.Object.DestroyImmediate(gameObject4);
+            ClarityLib.Logs.Log("Quick Menu Cleaned", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        }
     }
 
     public override void OnUpdate()
@@ -72,6 +79,7 @@ public class Main : MelonMod
             ToggleMenu();
 
         MovementGUI.Update();
+        ClickTP.Update();
     }
 
 

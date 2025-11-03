@@ -14,6 +14,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>Refs\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="ClarityLib">
+      <HintPath>..\..\..\ConsoleHelpers\ClarityLib\ClarityLib\bin\Debug\net6.0\ClarityLib.dll</HintPath>
+    </Reference>
     <Reference Include="Il2CppDataModel">
       <HintPath>Refs\Managed\Il2CppDataModel.dll</HintPath>
     </Reference>

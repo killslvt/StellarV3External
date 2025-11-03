@@ -29,5 +29,10 @@ namespace StellarV3External.SDK.Utils
                 id = avatar_id
             });
         }
+
+        public static string ColorToHex(Color color)
+        {
+            return "#" + ColorUtility.ToHtmlStringRGB(color);
+        }
     }
 }

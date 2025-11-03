@@ -15,19 +15,12 @@ namespace StellarV3External.SDK
         private const int SW_HIDE = 0;
         private const int SW_SHOW = 5;
 
-        private const string ConsoleLogsUrl = "https://github.com/killslvt/StellarV3External/releases/download/ConsoleLogs/ConsoleLogs.exe";
+        private const string ConsoleLogsUrl = "https://github.com/killslvt/ClarityLib/releases/download/Beta/ClarityConsole.exe";
 
         public static void InitConsole()
         {
             var consoleHandle = GetConsoleWindow();
-            string consoleLogPath = Path.Combine(Environment.CurrentDirectory, "ConsoleLogs.exe");
-            string clarityPath = Path.Combine(Environment.CurrentDirectory, "Plugins", "Clarity.dll");
-
-            if (File.Exists(clarityPath))
-            {
-                MelonLogger.Msg("[Info] ~ Clarity.dll found. Skipping custom console initialization.");
-                return;
-            }
+            string consoleLogPath = Path.Combine(Environment.CurrentDirectory, "ClarityConsole.exe");
 
             ShowWindow(consoleHandle, SW_HIDE);
 
@@ -58,7 +51,7 @@ namespace StellarV3External.SDK
                     FileName = consoleLogPath,
                     UseShellExecute = true
                 });
-                Log("ConsoleLogs.exe launched, original console hidden.", LType.Success);
+                ClarityLib.Logs.Log("ConsoleLogs.exe launched, original console hidden", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
             }
             catch (Exception e)
             {
@@ -68,7 +61,8 @@ namespace StellarV3External.SDK
             }
         }
 
-        public static void Log(string message, LType type = LType.Info)
+        //old logging method
+        /*public static void Log2(string message, LType type = LType.Info)
         {
             if (type == LType.Info)
                 Console.ForegroundColor = ConsoleColor.White;
@@ -90,8 +84,24 @@ namespace StellarV3External.SDK
             Console.WriteLine("[" + type.ToString() + "]" + " ~ " + message);
             MelonLogger.Msg("[" + type.ToString() + "]" + " ~ " + message);
             Console.ResetColor();
+        }*/
+
+        public static ConsoleColor GetColor(LType type)
+        {
+            return type switch
+            {
+                LType.Info => ConsoleColor.White,
+                LType.Warning => ConsoleColor.Yellow,
+                LType.Error => ConsoleColor.Red,
+                LType.Success => ConsoleColor.Green,
+                LType.Debug => ConsoleColor.Cyan,
+                LType.Join => ConsoleColor.Green,
+                LType.Leave => ConsoleColor.Red,
+                _ => ConsoleColor.Gray,
+            };
         }
     }
+
 
     internal enum LType
     {

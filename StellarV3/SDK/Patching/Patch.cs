@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
 using Il2CppBestHTTP.Logger;
+using Il2CppExitGames.Client.Photon;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppZLogger;
 using System.Reflection;
@@ -25,7 +26,7 @@ namespace StellarV3External.SDK.Patching
             }
             catch (Exception ex)
             {
-                Logging.Log("[Patch Error] Failed to patch '" + targetMethod?.Name + "':\n" + ex, LType.Error);
+                ClarityLib.Logs.Log("[Patch Error] Failed to patch '" + targetMethod?.Name + "':\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
             }
         }
 
@@ -37,11 +38,11 @@ namespace StellarV3External.SDK.Patching
                     typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_PDM_2)),
                     GetPatchMethod(nameof(OnPlayerJoinPatch))
                 );
-                Logging.Log("OnPlayerJoin patch applied successfully.", LType.Success);
+                ClarityLib.Logs.Log("OnPlayerJoin patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
             }
             catch (Exception ex)
             {
-                Logging.Log("[Patch Error] Failed to patch OnPlayerJoin:\n" + ex, LType.Error);
+                ClarityLib.Logs.Log("[Patch Error] Failed to patch OnPlayerJoin:" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
             }
 
             try //On Player Leave
@@ -50,11 +51,11 @@ namespace StellarV3External.SDK.Patching
                     typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_0)),
                     GetPatchMethod(nameof(OnPlayerLeavePatch))
                 );
-                Logging.Log("OnPlayerLeave patch applied successfully.", LType.Success);
+                ClarityLib.Logs.Log("OnPlayerLeave patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
             }
             catch (Exception ex)
             {
-                Logging.Log("[Patch Error] Failed to patch OnPlayerLeave:\n" + ex, LType.Error);
+                ClarityLib.Logs.Log("[Patch Error] Failed to patch OnPlayerLeave:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
             }
 
             try //ZLogger Spam Removal (Credit: catnotadog https://discord.gg/fXVn2JJyuA)
@@ -75,26 +76,44 @@ namespace StellarV3External.SDK.Patching
                     GetPatchMethod(nameof(StopSpam))
                 );
 
-                Logging.Log("Console Spam patch applied successfully.", LType.Success);
+                ClarityLib.Logs.Log("Console Spam patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
             }
             catch (Exception ex)
             {
-                Logging.Log("[Patch Error] Failed to patch Console Spam:\n" + ex, LType.Error);
+                ClarityLib.Logs.Log("[Patch Error] Failed to patch Console Spam:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
             }
         }
 
-        internal static bool StopSpam() => false;
+        #region OnEvent
+        //Not used currently but kept for future reference
+        private static bool OnEventPatch(EventData __0)
+        {
+            var data = __0.CustomData;
+
+            switch (__0.Code)
+            {
+                case 1:
+                    break;
+            }
+
+            return true;
+        }
+        #endregion
 
         #region OnPlayerJoin/Leave
         private static void OnPlayerJoinPatch(VRC.Player __0)
         {
-            Logging.Log($"Player joined: {__0.field_Private_APIUser_0.displayName}", LType.Join);
+            ClarityLib.Logs.Log($"Player joined: {__0.field_Private_APIUser_0.displayName}", LType.Join.ToString(), Logging.GetColor(LType.Join), System.ConsoleColor.Cyan, "Stellar");
         }
 
         private static void OnPlayerLeavePatch(VRC.Player __0)
         {
-            Logging.Log($"Player left: {__0.field_Private_APIUser_0.displayName}", LType.Leave);
+            ClarityLib.Logs.Log($"Player left: {__0.field_Private_APIUser_0.displayName}", LType.Leave.ToString(), Logging.GetColor(LType.Leave), System.ConsoleColor.Cyan, "Stellar");
         }
+        #endregion
+
+        #region ZLogger
+        internal static bool StopSpam() => false;
         #endregion
     }
 }
