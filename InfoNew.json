@@ -1,0 +1,9 @@
+{
+  "gameSlug": "vrchat",
+  "gameName": "VRChat",
+  "mappingUrl": "https://github.com/killslvt/StellarV3External/raw/refs/heads/master/MapsUpdated.csv.gz",
+  "mappingFileSHA512": "37FCEA6E68D1215587BFDC6F536AF726E8C4B5FE236EF13B3859034DBB540A7225504C9951A7886B99BF2000DC74ADC6E07992A33C95F05CBBF1EF39FAB20551",
+  "forceCpp2IlVersion": null,
+  "forceUnhollowerVersion": null,
+  "obfuscationRegex": null
+}
