@@ -35,7 +35,7 @@ namespace StellarV3External.SDK.Patching
             try //On Player Join
             {
                 DoPatch(
-                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_PDM_2)),
+                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_PDM_1)),
                     GetPatchMethod(nameof(OnPlayerJoinPatch))
                 );
                 ClarityLib.Logs.Log("OnPlayerJoin patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
