@@ -1,7 +1,6 @@
 ﻿using Il2CppVRC.SDKBase;
 using Il2CppVRC.Udon;
 using Il2CppVRC.Udon.Common.Interfaces;
-using MelonLoader;
 using StellarV3External.SDK.Utils;
 using System.Collections;
 using UnityEngine;
@@ -83,20 +82,6 @@ namespace StellarV3External.Menus
                     gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "KillLocalPlayer");
                     PopupUtils.HudMessage("Murder 4", "Killed All", 3f);
                 }, yOffset);
-
-                yOffset += 35;
-
-                new GUIToggleButton("Patron Crash", () =>
-                {
-                    TargetLagAll = true;
-                    MelonCoroutines.Start(PatreonCrash(0.5f));
-                    PopupUtils.HudMessage("Patron Crash", "Toggled On", 3);
-                },
-                () =>
-                {
-                    TargetLagAll = false;
-                    PopupUtils.HudMessage("Patron Crash", "Toggled Off", 3);
-                }, () => TargetLagAll, yOffset);
 
                 yOffset += 35;
             }

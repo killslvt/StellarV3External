@@ -9,7 +9,7 @@ using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.0", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.1", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -63,10 +63,9 @@ public class Main : MelonMod
             ClarityLib.Logs.Log("Cleaning QM", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
             GameObject gameObject1 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/Carousel_Banners");
             GameObject gameObject2 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/VRC+_Banners");
-            GameObject gameObject3 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/Page_Buttons_QM/HorizontalLayoutGroup/Page_VRCPlus_Unsubscribed");
-            UnityEngine.Object.DestroyImmediate(gameObject1);
-            UnityEngine.Object.DestroyImmediate(gameObject2);
-            UnityEngine.Object.DestroyImmediate(gameObject3);
+            gameObject1.SetActive(false);
+            gameObject2.SetActive(false);
+
             ClarityLib.Logs.Log("Quick Menu Cleaned", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         }
     }
