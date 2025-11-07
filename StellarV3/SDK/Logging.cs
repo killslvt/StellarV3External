@@ -62,7 +62,7 @@ namespace StellarV3External.SDK
         }
 
         //old logging method
-        /*public static void Log2(string message, LType type = LType.Info)
+        /*public static void Writeline(string message, LType type = LType.Info)
         {
             if (type == LType.Info)
                 Console.ForegroundColor = ConsoleColor.White;

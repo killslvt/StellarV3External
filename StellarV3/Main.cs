@@ -1,6 +1,7 @@
 ﻿using ClarityLib;
 using Il2CppVRC.Core;
 using MelonLoader;
+using StellarV3.Features.Exploits;
 using StellarV3.Features.Movement;
 using StellarV3External.Features.Visuals;
 using StellarV3External.Menus;
@@ -9,7 +10,7 @@ using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.1", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.3", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -75,6 +76,7 @@ public class Main : MelonMod
         if (Input.GetKeyDown(KeyCode.Insert) || Input.GetKeyDown(KeyCode.F5))
             ToggleMenu();
 
+        Spoofer.NameSpoof();
         MovementGUI.Update();
         ClickTP.Update();
     }

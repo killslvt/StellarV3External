@@ -1,4 +1,5 @@
 ﻿using Il2CppVRC.SDKBase;
+using StellarV3External.SDK.Utils;
 using UnityEngine;
 
 namespace StellarV3.Features.Movement
@@ -15,9 +16,10 @@ namespace StellarV3.Features.Movement
 
         private static void ClickTeleport()
         {
-            Ray posF = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            RaycastHit[] PosData = Physics.RaycastAll(posF);
-            if (PosData.Length > 0) { RaycastHit pos = PosData[0]; Networking.LocalPlayer.gameObject.transform.position = pos.point; }
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
+            {
+                Networking.LocalPlayer.gameObject.transform.position = hit.point;
+            }
         }
     }
 }

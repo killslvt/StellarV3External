@@ -1,6 +1,7 @@
 ﻿using Il2CppVRC.SDKBase;
 using Il2CppVRC.Udon;
 using Il2CppVRC.Udon.Common.Interfaces;
+using StellarV3External.Features.Visuals;
 using StellarV3External.SDK.Utils;
 using System.Collections;
 using UnityEngine;
@@ -26,9 +27,72 @@ namespace StellarV3External.Menus
 
         private static int yOffset = 0;
 
+        private static GameObject targetGameObject;
+        private static string targetEvent;
+        
+        private static bool targetSelect = false;
+        private static NetworkEventTarget target;
+
         public static void Menu()
         {
             yOffset = 80;
+
+            new GUIToggleButton("Network Event Target", () =>
+            {
+                targetSelect = true;
+                target = NetworkEventTarget.All;
+                PopupUtils.HudMessage("Network Event Target", "Target Set To All", 3f);
+            }, () =>
+            {
+                targetSelect = false;
+                target = NetworkEventTarget.Self;
+                PopupUtils.HudMessage("Network Event Target", "Target Set To Self", 3f);
+            }, () => targetSelect, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Set GameObject", () =>
+            {
+                targetGameObject = GameObject.Find(GUIUtility.systemCopyBuffer);
+                PopupUtils.HudMessage("Set", $"GameObject Set To {targetGameObject}");
+            }, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Set Udon Event", () =>
+            {
+                targetEvent = GUIUtility.systemCopyBuffer;
+                PopupUtils.HudMessage("Set", $"GameObject Set To {targetEvent}");
+            }, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Send Custom Udon Event", () =>
+            {
+                if (targetGameObject == null)
+                {
+                    PopupUtils.HudMessage("Error", "No target GameObject set.");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(targetEvent))
+                {
+                    PopupUtils.HudMessage("Error", "No event name set.");
+                    return;
+                }
+
+                var udon = targetGameObject.GetComponent<UdonBehaviour>();
+                if (udon == null)
+                {
+                    PopupUtils.HudMessage("Error", "No UdonBehaviour on target.");
+                    return;
+                }
+
+                udon.SendCustomNetworkEvent(target, targetEvent);
+                PopupUtils.HudMessage("Udon Sent", $"Sent {targetEvent}");
+            }, yOffset);
+
+            yOffset += 35;
 
             if (worldLoaded)
             {
