@@ -3,7 +3,7 @@ using Il2CppVRC.Localization;
 
 namespace StellarV3External.SDK.Utils
 {
-    internal class PopupUtils
+    internal static class PopupUtils
     {
         public static void HudMessage(string content, string? description = null, float duration = 5f)
         {

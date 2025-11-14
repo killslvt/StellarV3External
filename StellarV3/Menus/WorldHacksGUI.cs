@@ -1,8 +1,8 @@
 ﻿using Il2CppVRC.SDKBase;
 using Il2CppVRC.Udon;
 using Il2CppVRC.Udon.Common.Interfaces;
+using StellarV3External.SDK;
 using StellarV3External.SDK.Utils;
-using System.Collections;
 using UnityEngine;
 using static StellarV3External.GUIButtonAPI.GUIButtonAPI;
 
@@ -10,6 +10,7 @@ namespace StellarV3External.Menus
 {
     internal class WorldHacksGUI
     {
+        private static int yOffset = 0;
         public static bool worldLoaded = false;
 
         public static void Initialize(string sceneName)
@@ -24,14 +25,90 @@ namespace StellarV3External.Menus
             }
         }
 
-        private static int yOffset = 0;
+        private static GameObject targetGameObject;
+        private static string targetUdonEvent;
+        private static bool eventTarget = false;
+        private static NetworkEventTarget target = NetworkEventTarget.Self;
 
         public static void Menu()
         {
             yOffset = 80;
 
+            new GUIToggleButton("Network Event Target", () =>
+            {
+                eventTarget = true;
+                target = NetworkEventTarget.All;
+                PopupUtils.HudMessage("Network Event Target", "Target Set To All", 3f);
+            }, () =>
+            {
+                eventTarget = false;
+                target = NetworkEventTarget.Self;
+                PopupUtils.HudMessage("Network Event Target", "Target Set To Self", 3f);
+            }, () => eventTarget, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Set GameObject", () =>
+            {
+                string objectName = GUIUtility.systemCopyBuffer;
+                if (string.IsNullOrWhiteSpace(objectName))
+                {
+                    PopupUtils.HudMessage("Custom Udon", "Clipboard is empty!", 3f);
+                    return;
+                }
+
+                targetGameObject = GameObject.Find(objectName);
+                if (targetGameObject != null)
+                    PopupUtils.HudMessage("Custom Udon", $"GameObject Found: {targetGameObject.name}", 3f);
+                else
+                    PopupUtils.HudMessage("Custom Udon", $"GameObject \"{objectName}\" Not Found", 3f);
+            }, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Set Event", () =>
+            {
+                string clipboardEvent = GUIUtility.systemCopyBuffer;
+                if (string.IsNullOrWhiteSpace(clipboardEvent))
+                {
+                    PopupUtils.HudMessage("Custom Udon", "Clipboard is empty!", 3f);
+                    return;
+                }
+
+                targetUdonEvent = clipboardEvent;
+                PopupUtils.HudMessage("Custom Udon", $"Event Set: {targetUdonEvent}", 3f);
+            }, yOffset);
+
+            yOffset += 35;
+
+            new GUISingleButton("Send Custom Udon Event", () =>
+            {
+                try
+                {
+                    var udon = targetGameObject.GetComponent<UdonBehaviour>();
+                    udon.SendCustomNetworkEvent(target, targetUdonEvent);
+                    PopupUtils.HudMessage("Custom Udon", $"Sent Custom Udon Event {targetUdonEvent}", 3f);
+                }
+                catch (Exception ex)
+                {
+                    ClarityLib.Logs.Log($"Failed to send custom udon event: {ex}", LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                    PopupUtils.HudMessage("Custom Udon", "Failed to Send Event", 3f);
+                }
+            }, yOffset);
+
+            yOffset += 35;
+
             if (worldLoaded)
             {
+                new GUISingleButton("Start Game", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncCountdown");
+                    PopupUtils.HudMessage("Murder 4", "Started Game", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
                 new GUISingleButton("End Game", () =>
                 {
                     GameObject gameObject = GameObject.Find("Game Logic");
@@ -41,21 +118,93 @@ namespace StellarV3External.Menus
 
                 yOffset += 35;
 
-                new GUISingleButton("Win Game", () =>
+                new GUISingleButton("Blind All", () =>
                 {
                     GameObject gameObject = GameObject.Find("Game Logic");
-                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryB");
-                    PopupUtils.HudMessage("Murder 4", "Won Game", 3f);
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "OnLocalPlayerBlinded");
+                    PopupUtils.HudMessage("Murder 4", "Blinded All Players", 3f);
                 }, yOffset);
 
                 yOffset += 35;
 
-                new GUISingleButton("Tp Revolver", () =>
+                new GUISingleButton("Victory B", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryB");
+                    PopupUtils.HudMessage("Murder 4", "Blinded All Players", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Victory M", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryM");
+                    PopupUtils.HudMessage("Murder 4", "Blinded All Players", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Lights Off", () =>
+                {
+                    List<UdonBehaviour> list = new List<UdonBehaviour>();
+                    Transform transform = GameObject.Find("Game Logic/Switch Boxes").transform;
+                    for (int i = 0; i < transform.childCount; i++)
+                    {
+                        list.Add(transform.GetChild(i).GetComponent<UdonBehaviour>());
+                    }
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        list[j].SendCustomNetworkEvent(0, "SwitchDown");
+                    }
+                    PopupUtils.HudMessage("Murder 4", "Forced Lights Off", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Lights On", () =>
+                {
+                    List<UdonBehaviour> list = new List<UdonBehaviour>();
+                    Transform transform = GameObject.Find("Game Logic/Switch Boxes").transform;
+                    for (int i = 0; i < transform.childCount; i++)
+                    {
+                        list.Add(transform.GetChild(i).GetComponent<UdonBehaviour>());
+                    }
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        list[j].SendCustomNetworkEvent(0, "SwitchUp");
+                    }
+                    PopupUtils.HudMessage("Murder 4", "Forced Lights On", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Bring Revolver", () =>
                 {
                     GameObject gameObject = GameObject.Find("Game Logic/Weapons/Revolver");
                     Networking.SetOwner(Networking.LocalPlayer, gameObject);
                     gameObject.transform.position = Networking.LocalPlayer.gameObject.transform.position + new Vector3(0f, 0.1f, 0f);
-                    PopupUtils.HudMessage("Murder 4", "Teleported Revolver", 3f);
+                    PopupUtils.HudMessage("Murder 4", "Brought Revolver", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Bring Shotgun", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic/Weapons/Unlockables/Shotgun (0)");
+                    Networking.SetOwner(Networking.LocalPlayer, gameObject);
+                    gameObject.transform.position = Networking.LocalPlayer.gameObject.transform.position + new Vector3(0f, 0.1f, 0f);
+                    PopupUtils.HudMessage("Murder 4", "Brought Shotgun", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Bring Luger", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic/Weapons/Unlockables/Luger (0)");
+                    Networking.SetOwner(Networking.LocalPlayer, gameObject);
+                    gameObject.transform.position = Networking.LocalPlayer.gameObject.transform.position + new Vector3(0f, 0.1f, 0f);
+                    PopupUtils.HudMessage("Murder 4", "Brought Luger", 3f);
                 }, yOffset);
 
                 yOffset += 35;
@@ -63,7 +212,7 @@ namespace StellarV3External.Menus
                 new GUISingleButton("Open Doors", () =>
                 {
                     DoorManager.OpenAllDoors();
-                    PopupUtils.HudMessage("Murder 4", "Opened Doors", 3f);
+                    PopupUtils.HudMessage("Murder 4", "Opened All Doors", 3f);
                 }, yOffset);
 
                 yOffset += 35;
@@ -71,16 +220,15 @@ namespace StellarV3External.Menus
                 new GUISingleButton("Close Doors", () =>
                 {
                     DoorManager.CloseAllDoors();
-                    PopupUtils.HudMessage("Murder 4", "Closed Doors", 3f);
+                    PopupUtils.HudMessage("Murder 4", "Closed All Doors", 3f);
                 }, yOffset);
 
                 yOffset += 35;
 
-                new GUISingleButton("Kill All", () =>
+                new GUISingleButton("Lock Doors", () =>
                 {
-                    GameObject gameObject = GameObject.Find("Game Logic");
-                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "KillLocalPlayer");
-                    PopupUtils.HudMessage("Murder 4", "Killed All", 3f);
+                    DoorManager.LockAllDoors();
+                    PopupUtils.HudMessage("Murder 4", "Locked All Doors", 3f);
                 }, yOffset);
 
                 yOffset += 35;
@@ -88,28 +236,6 @@ namespace StellarV3External.Menus
         }
 
         #region Features
-        public static bool TargetLagAll = false;
-
-        public static IEnumerator PatreonCrash(float delay)
-        {
-            GameObject targetObj = GameObject.Find("Patreon Credits");
-            if (targetObj == null)
-            {
-                yield break;
-            }
-
-            UdonBehaviour udon = targetObj.GetComponent<UdonBehaviour>();
-            if (udon == null)
-            {
-                yield break;
-            }
-
-            while (TargetLagAll)
-            {
-                udon.SendCustomNetworkEvent(NetworkEventTarget.All, "ListPatrons");
-                yield return new WaitForSeconds(delay);
-            }
-        }
         public static class DoorManager
         {
             private static readonly string[] DoorNames =
@@ -139,7 +265,6 @@ namespace StellarV3External.Menus
             public static void CloseAllDoors()
             {
                 InteractWithAll("close");
-                LockAllDoors();
             }
 
             public static void LockAllDoors()
@@ -149,7 +274,7 @@ namespace StellarV3External.Menus
 
             public static void UnlockAllDoors()
             {
-                InteractWithAll("shove", repeat: 4);
+                InteractWithAll("shove", 4);
                 OpenAllDoors();
             }
 

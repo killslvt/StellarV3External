@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
-using Il2CppBestHTTP.Logger;
 using Il2CppExitGames.Client.Photon;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Il2CppZLogger;
 using System.Reflection;
 
 namespace StellarV3External.SDK.Patching
@@ -27,6 +24,7 @@ namespace StellarV3External.SDK.Patching
             catch (Exception ex)
             {
                 ClarityLib.Logs.Log("[Patch Error] Failed to patch '" + targetMethod?.Name + "':\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("[Patch Error] Failed to patch '" + targetMethod?.Name + "':\n" + ex, LType.Error);
             }
         }
 
@@ -39,10 +37,12 @@ namespace StellarV3External.SDK.Patching
                     GetPatchMethod(nameof(OnPlayerJoinPatch))
                 );
                 ClarityLib.Logs.Log("OnPlayerJoin patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("OnPlayerJoin patch applied successfully", LType.Success);  
             }
             catch (Exception ex)
             {
                 ClarityLib.Logs.Log("[Patch Error] Failed to patch OnPlayerJoin:" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("[Patch Error] Failed to patch OnPlayerJoin:\n" + ex, LType.Error);
             }
 
             try //On Player Leave
@@ -52,35 +52,26 @@ namespace StellarV3External.SDK.Patching
                     GetPatchMethod(nameof(OnPlayerLeavePatch))
                 );
                 ClarityLib.Logs.Log("OnPlayerLeave patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("OnPlayerLeave patch applied successfully", LType.Success);
             }
             catch (Exception ex)
             {
                 ClarityLib.Logs.Log("[Patch Error] Failed to patch OnPlayerLeave:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("[Patch Error] Failed to patch OnPlayerLeave:\n" + ex, LType.Error);
             }
 
-            try //ZLogger Spam Removal (Credit: catnotadog https://discord.gg/fXVn2JJyuA)
+            try //VRCPlus Spoof (Credit: catnotadog https://discord.gg/fXVn2JJyuA)
             {
-                DoPatch(
-                typeof(Il2CppVRC.Core.VRCLogger).GetMethod(
-                    nameof(Il2CppVRC.Core.VRCLogger.Log),
-                    new Type[] { typeof(ILogger), typeof(ZLoggerDebugInterpolatedStringHandler) }
-                ),
-                GetPatchMethod(nameof(StopSpam))
-            );
-
-                DoPatch(
-                    typeof(Il2CppVRC.Core.ZLoggerHandlerLogger).GetMethod(
-                        nameof(Il2CppVRC.Core.ZLoggerHandlerLogger.LogFormat),
-                        new[] { typeof(UnityEngine.LogType), typeof(UnityEngine.Object), typeof(string), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) }
-                    ),
-                    GetPatchMethod(nameof(StopSpam))
-                );
-
-                ClarityLib.Logs.Log("Console Spam patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
+                Instance.Patch(
+                    typeof(VRCPlusStatus).GetProperty(nameof(VRCPlusStatus.prop_Object1PublicIDisposableObAc1BoObObUnique_1_Boolean_0)).GetGetMethod(),
+                    postfix: new HarmonyMethod(typeof(Patch), nameof(VRCSpoof)));
+                ClarityLib.Logs.Log("VRCPlus patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("VRCPlus patch applied successfully", LType.Success);
             }
             catch (Exception ex)
             {
-                ClarityLib.Logs.Log("[Patch Error] Failed to patch Console Spam:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                ClarityLib.Logs.Log("[Patch Error] Failed to patch VRCPlus:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("[Patch Error] Failed to patch VRCPlus:\n" + ex, LType.Error);
             }
         }
 
@@ -112,8 +103,11 @@ namespace StellarV3External.SDK.Patching
         }
         #endregion
 
-        #region ZLogger
-        internal static bool StopSpam() => false;
+        #region VRCPlus Spoof
+        internal static void VRCSpoof(ref Object1PublicIDisposableObAc1BoObObUnique<bool> __result)
+        {
+            __result.field_Protected_T_0 = true;
+        }
         #endregion
     }
 }

@@ -16,9 +16,23 @@ namespace StellarV3External.SDK
         private const int SW_SHOW = 5;
 
         private const string ConsoleLogsUrl = "https://github.com/killslvt/ClarityLib/releases/download/Beta/ClarityConsole.exe";
+        private const string ClarityPluginUrl = "https://github.com/killslvt/Clarity/releases/download/v1.0.0/Clarity.dll";
 
         public static void InitConsole()
         {
+            if (MelonUtils.IsUnderWineOrSteamProton())
+            {
+                ClarityLib.Logs.DisableAnsi = true;
+                ClarityLib.Logs.Log("Wine/Proton detected, ansi disabled", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+                Log("Wine/Proton detected, ansi disabled", LType.Info);
+            }
+            else
+            {
+                ClarityLib.Logs.DisableAnsi = false;
+                ClarityLib.Logs.Log("Wine/Proton not detected, ansi enabled", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+                Log("Wine/Proton not detected, ansi enabled", LType.Info);
+            }
+
             var consoleHandle = GetConsoleWindow();
             string consoleLogPath = Path.Combine(Environment.CurrentDirectory, "ClarityConsole.exe");
 
@@ -62,29 +76,10 @@ namespace StellarV3External.SDK
         }
 
         //old logging method
-        /*public static void Log2(string message, LType type = LType.Info)
+        public static void Log(string message, LType type = LType.Info)
         {
-            if (type == LType.Info)
-                Console.ForegroundColor = ConsoleColor.White;
-            else if (type == LType.Warning)
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            else if (type == LType.Error)
-                Console.ForegroundColor = ConsoleColor.Red;
-            else if (type == LType.Success)
-                Console.ForegroundColor = ConsoleColor.Green;
-            else if (type == LType.Debug)
-                Console.ForegroundColor = ConsoleColor.Cyan;
-            else if (type == LType.Join)
-                Console.ForegroundColor = ConsoleColor.Green;
-            else if (type == LType.Leave)
-                Console.ForegroundColor = ConsoleColor.Red;
-            else
-                Console.ForegroundColor = ConsoleColor.Gray;
-
-            Console.WriteLine("[" + type.ToString() + "]" + " ~ " + message);
             MelonLogger.Msg("[" + type.ToString() + "]" + " ~ " + message);
-            Console.ResetColor();
-        }*/
+        }
 
         public static ConsoleColor GetColor(LType type)
         {

@@ -82,6 +82,22 @@ namespace StellarV3External.Menus
             }
 
             string displayName = player.field_Private_APIUser_0?.displayName ?? "Unknown";
+            Vector3 position = player.transform.position;
+            float distance = PlayerUtils.LocalPlayer() != null ? Vector3.Distance(PlayerUtils.LocalPlayer().transform.position, position) : 0f;
+            Color trustColor = PlayerUtils.GetTrustColor(player);
+
+            float labelX = 230f;
+            float labelY = yOffset;
+
+            GUIStyle style = new GUIStyle(GUI.skin.label)
+            {
+                richText = true
+            };
+
+            GUI.Label(new Rect(labelX, labelY, 400f, 20f), $"User: <color={PlayerUtils.ColorToHex(trustColor)}>" + displayName + "</color>");
+
+            GUI.Label(new Rect(labelX, labelY + 15f, 400f, 20f), $"Pos: {position.x:F1}, {position.y:F1}, {position.z:F1}");
+            GUI.Label(new Rect(labelX, labelY + 30f, 400f, 20f), $"Dis: {distance:F1}m");
 
             new GUISingleButton("Teleport To Player", () =>
             {

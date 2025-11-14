@@ -1,15 +1,17 @@
 ﻿using ClarityLib;
 using Il2CppVRC.Core;
 using MelonLoader;
+using StellarV3.Features.Exploits;
 using StellarV3.Features.Movement;
 using StellarV3External.Features.Visuals;
 using StellarV3External.Menus;
 using StellarV3External.SDK;
+using StellarV3External.SDK.Utils;
 using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.1", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.4", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -38,12 +40,16 @@ public class Main : MelonMod
         Logging.InitConsole();
 
         ClarityLib.Logs.Log("Init Patches", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Init Patches", LType.Info);
+
         Task.Run(() => StellarV3External.SDK.Patching.Patch.Init());
 
         ClarityLib.Logs.Log("Loading StellarV3", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Loading StellarV3", LType.Info);
         MelonCoroutines.Start(WaitForUser());
 
         ClarityLib.Logs.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info);
     }
 
     private static IEnumerator WaitForUser()
@@ -54,29 +60,39 @@ public class Main : MelonMod
         VRCUserName = APIUser.CurrentUser.displayName;
 
         ClarityLib.Logs.Log("Waiting for Canvas_QuickMenu(Clone)", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Waiting for Canvas_QuickMenu(Clone)", LType.Info);
         while (Camera.main == null || GameObject.Find("Canvas_QuickMenu(Clone)") == null)
             yield return null;
 
         ClarityLib.Logs.Log("Quick Menu found", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Quick Menu found", LType.Info);
         if (GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad"))
         {
             ClarityLib.Logs.Log("Cleaning QM", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+            Logging.Log("Cleaning QM", LType.Info);
             GameObject gameObject1 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/Carousel_Banners");
             GameObject gameObject2 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/VRC+_Banners");
             gameObject1.SetActive(false);
             gameObject2.SetActive(false);
 
             ClarityLib.Logs.Log("Quick Menu Cleaned", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+            Logging.Log("Quick Menu Cleaned", LType.Info);
         }
     }
 
     public override void OnUpdate()
     {
+        if (Input.GetKeyInt(KeyCode.LeftControl) && Input.GetKeyDownInt(KeyCode.R))
+        {
+            PlayerUtils.LocalPlayer().field_Private_VRCPlayerApi_0.Respawn();
+        }
+
         if (Input.GetKeyDown(KeyCode.Insert) || Input.GetKeyDown(KeyCode.F5))
             ToggleMenu();
 
         MovementGUI.Update();
         ClickTP.Update();
+        Spoofer.NameSpoof();
     }
 
 

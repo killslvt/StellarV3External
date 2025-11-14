@@ -37,6 +37,7 @@ namespace StellarV3.Features.Movement
             if (!BodyPartToBone.TryGetValue(attachLocation, out var bone))
             {
                 Logs.Log("Invalid BodyPart " + attachLocation, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("Invalid BodyPart " + attachLocation, LType.Error);
                 yield break;
             }
 

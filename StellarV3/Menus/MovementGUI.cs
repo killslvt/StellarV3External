@@ -5,6 +5,7 @@ using StellarV3External.SDK.Utils;
 using UnityEngine;
 using VRC;
 using VRC.DataModel;
+using VRC.Networking;
 using static StellarV3External.GUIButtonAPI.GUIButtonAPI;
 
 namespace StellarV3External.Menus
@@ -151,7 +152,7 @@ namespace StellarV3External.Menus
             {
                 ghostmode = true;
                 var localPlayer = Networking.LocalPlayer;
-                var serializer = localPlayer.gameObject.GetComponent<MonoBehaviour1PrivateIFlatBufferNetworkSerializerILoggableClassHa1ObVeObBoVeSpBoSyUnique>();
+                var serializer = localPlayer.gameObject.GetComponent<FlatBufferNetworkSerializer>();
                 serializer.enabled = false;
                 PopupUtils.HudMessage("Ghost Mode", "Toggled On", 3);
             },
@@ -159,7 +160,7 @@ namespace StellarV3External.Menus
             {
                 ghostmode = false;
                 var localPlayer = Networking.LocalPlayer;
-                var serializer = localPlayer.gameObject.GetComponent<MonoBehaviour1PrivateIFlatBufferNetworkSerializerILoggableClassHa1ObVeObBoVeSpBoSyUnique>();
+                var serializer = localPlayer.gameObject.GetComponent<FlatBufferNetworkSerializer>();
                 serializer.enabled = true;
                 PopupUtils.HudMessage("Ghost Mode", "Toggled Off", 3);
             }, () => ghostmode, yOffset);
