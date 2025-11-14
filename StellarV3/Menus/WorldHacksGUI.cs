@@ -232,6 +232,15 @@ namespace StellarV3External.Menus
                 }, yOffset);
 
                 yOffset += 35;
+
+                new GUISingleButton("Kill All", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "KillLocalPlayer");
+                    PopupUtils.HudMessage("Murder 4", "Killed All", 3f);
+                }, yOffset);
+
+                yOffset += 35;
             }
         }
 
