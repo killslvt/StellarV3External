@@ -95,11 +95,13 @@ namespace StellarV3External.SDK.Patching
         private static void OnPlayerJoinPatch(VRC.Player __0)
         {
             ClarityLib.Logs.Log($"Player joined: {__0.field_Private_APIUser_0.displayName}", LType.Join.ToString(), Logging.GetColor(LType.Join), System.ConsoleColor.Cyan, "Stellar");
+            Logging.Log($"Player joined: {__0.field_Private_APIUser_0.displayName}", LType.Join);
         }
 
         private static void OnPlayerLeavePatch(VRC.Player __0)
         {
             ClarityLib.Logs.Log($"Player left: {__0.field_Private_APIUser_0.displayName}", LType.Leave.ToString(), Logging.GetColor(LType.Leave), System.ConsoleColor.Cyan, "Stellar");
+            Logging.Log($"Player left: {__0.field_Private_APIUser_0.displayName}", LType.Leave);
         }
         #endregion
 

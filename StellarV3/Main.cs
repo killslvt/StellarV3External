@@ -11,7 +11,7 @@ using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.4", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.5", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
