@@ -1,12 +1,12 @@
 ﻿using Il2Cpp;
 using MelonLoader;
 using StellarV3.Features.Movement;
-using StellarV3External.Features.Exploits;
-using StellarV3External.SDK.Utils;
+using StellarV3.Features.Exploits;
+using StellarV3.SDK.Utils;
 using UnityEngine;
-using static StellarV3External.GUIButtonAPI.GUIButtonAPI;
+using static StellarV3.GUIButtonAPI.GUIButtonAPI;
 
-namespace StellarV3External.Menus
+namespace StellarV3.Menus
 {
     internal class PlayersGUI
     {
@@ -141,6 +141,44 @@ namespace StellarV3External.Menus
                 PopupUtils.HudMessage("Portal Spam", "Toggled Off", 3);
             },
             () => PortalSpamUser, yOffset);
+
+            yOffset += 35;
+
+            new GUIToggleButton("Item Orbit", () =>
+            {
+                ItemOrbit.EnableOrbit(selectedPlayer);
+                PopupUtils.HudMessage("Item Orbit", "Toggled On", 3);
+            },
+            () =>
+            {
+                ItemOrbit.DisableOrbit();
+                PopupUtils.HudMessage("Item Orbit", "Toggled Off", 3);
+            },
+            () => ItemOrbit.itemOrbit, yOffset);
+
+            if (ItemOrbit.itemOrbit)
+            {
+                yOffset += 35;
+
+                new GUISlider("Orbit Speed", ItemOrbit.orbitSpeed, 1f, 20f, yOffset, (value) =>
+                {
+                    ItemOrbit.orbitSpeed = value;
+                });
+
+                yOffset += 35;
+
+                new GUISlider("Orbit Radius", ItemOrbit.orbitRadius, 1f, 10f, yOffset, (value) =>
+                {
+                    ItemOrbit.orbitRadius = value;
+                });
+
+                yOffset += 35;
+
+                new GUISlider("Orbit Height", ItemOrbit.orbitHeight, 1f, 10f, yOffset, (value) =>
+                {
+                    ItemOrbit.orbitHeight = value;
+                });
+            }
 
             yOffset += 35;
 

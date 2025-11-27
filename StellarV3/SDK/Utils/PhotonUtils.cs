@@ -2,7 +2,7 @@
 using Il2CppExitGames.Client.Photon;
 using Photon.Pun;
 
-namespace StellarV3External.SDK.Utils
+namespace StellarV3.SDK.Utils
 {
     internal class PhotonUtils
     {

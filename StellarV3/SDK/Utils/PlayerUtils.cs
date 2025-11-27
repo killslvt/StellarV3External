@@ -3,7 +3,7 @@ using Il2CppVRC.Core;
 using UnityEngine;
 using VRC;
 
-namespace StellarV3External.SDK.Utils
+namespace StellarV3.SDK.Utils
 {
     internal static class PlayerUtils
     {

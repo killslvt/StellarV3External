@@ -1,27 +1,41 @@
 ﻿using Il2CppVRC.SDKBase;
 using Il2CppVRC.Udon;
 using Il2CppVRC.Udon.Common.Interfaces;
-using StellarV3External.SDK;
-using StellarV3External.SDK.Utils;
+using MelonLoader;
+using StellarV3.Features.Exploits;
+using StellarV3.Menus.Worlds;
+using StellarV3.SDK;
+using StellarV3.SDK.Utils;
 using UnityEngine;
-using static StellarV3External.GUIButtonAPI.GUIButtonAPI;
+using UnityEngine.UI;
+using static StellarV3.GUIButtonAPI.GUIButtonAPI;
 
-namespace StellarV3External.Menus
+namespace StellarV3.Menus
 {
     internal class WorldHacksGUI
     {
         private static int yOffset = 0;
-        public static bool worldLoaded = false;
+        public static bool m4Loaded = false;
+        public static bool amongusLoaded = false;
 
         public static void Initialize(string sceneName)
         {
             if (sceneName == "Murder Nevermore")
             {
-                worldLoaded = true;
+				m4Loaded = true;
             }
             else
             {
-                worldLoaded = false;
+                m4Loaded = false;
+            }
+
+            if (sceneName == "Skeld")
+            {
+                amongusLoaded = true;
+            }
+            else
+            {
+                amongusLoaded = false;
             }
         }
 
@@ -37,8 +51,8 @@ namespace StellarV3External.Menus
             new GUIToggleButton("Network Event Target", () =>
             {
                 eventTarget = true;
-                target = NetworkEventTarget.All;
-                PopupUtils.HudMessage("Network Event Target", "Target Set To All", 3f);
+                target = NetworkEventTarget.Others;
+                PopupUtils.HudMessage("Network Event Target", "Target Set To Other", 3f);
             }, () =>
             {
                 eventTarget = false;
@@ -98,7 +112,109 @@ namespace StellarV3External.Menus
 
             yOffset += 35;
 
-            if (worldLoaded)
+			new GUISingleButton("Log Udon Events To File", () =>
+			{
+				MelonCoroutines.Start(Udon.LogUdonEvents());
+			}, yOffset);
+
+			yOffset += 35;
+
+            if (amongusLoaded)
+            {
+                new GUISingleButton("Start Game", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncCountdown");
+                    PopupUtils.HudMessage("Among Us", "Started Game", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("End Game", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncAbort");
+                    PopupUtils.HudMessage("Among Us", "Ended Game", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Self Imposter", () =>
+                {
+                    for (int i = 0; i < 24; i++)
+                    {
+                        if (GameObject.Find("Game Logic/Game Canvas/Game In Progress/Player List/Player List Group/Player Entry (" + i.ToString() + ")/Player Name Text").GetComponent<Text>().text.Equals(Networking.LocalPlayer.displayName))
+                        {
+                            GameObject.Find("Player Node (" + i.ToString() + ")").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncAssignM");
+                        }
+                    }
+                    PopupUtils.HudMessage("Among Us", "You Are Now A Imposter", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Self Crewmate", () =>
+                {
+                    for (int i = 0; i < 24; i++)
+                    {
+                        if (GameObject.Find("Game Logic/Game Canvas/Game In Progress/Player List/Player List Group/Player Entry (" + i.ToString() + ")/Player Name Text").GetComponent<Text>().text.Equals(Networking.LocalPlayer.displayName))
+                        {
+                            GameObject.Find("Player Node (" + i.ToString() + ")").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncAssignB");
+                        }
+                    }
+                    PopupUtils.HudMessage("Among Us", "You Are Now A Crewmate", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Kill All", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "KillLocalPlayer");
+                    PopupUtils.HudMessage("Among Us", "Killed All Players", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Start Emergency", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "StartMeeting");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncEmergencyMeeting");
+                    PopupUtils.HudMessage("Among Us", "Start Emergency", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Finish All Task", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "OnLocalPlayerCompletedTask");
+                    PopupUtils.HudMessage("Among Us", "Killed All Players", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Crew Win", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryC");
+                    PopupUtils.HudMessage("Among Us", "Crew Won", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+
+                new GUISingleButton("Imposter Win", () =>
+                {
+                    GameObject gameObject = GameObject.Find("Game Logic");
+                    gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryI");
+                    PopupUtils.HudMessage("Among Us", "Imposter Won", 3f);
+                }, yOffset);
+
+                yOffset += 35;
+            }
+
+            if (m4Loaded)
             {
                 new GUISingleButton("Start Game", () =>
                 {
@@ -131,7 +247,7 @@ namespace StellarV3External.Menus
                 {
                     GameObject gameObject = GameObject.Find("Game Logic");
                     gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryB");
-                    PopupUtils.HudMessage("Murder 4", "Blinded All Players", 3f);
+                    PopupUtils.HudMessage("Murder 4", "B Won", 3f);
                 }, yOffset);
 
                 yOffset += 35;
@@ -140,7 +256,7 @@ namespace StellarV3External.Menus
                 {
                     GameObject gameObject = GameObject.Find("Game Logic");
                     gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "SyncVictoryM");
-                    PopupUtils.HudMessage("Murder 4", "Blinded All Players", 3f);
+                    PopupUtils.HudMessage("Murder 4", "M Won", 3f);
                 }, yOffset);
 
                 yOffset += 35;
@@ -211,7 +327,7 @@ namespace StellarV3External.Menus
 
                 new GUISingleButton("Open Doors", () =>
                 {
-                    DoorManager.OpenAllDoors();
+                    Murder4Utils.OpenAllDoors();
                     PopupUtils.HudMessage("Murder 4", "Opened All Doors", 3f);
                 }, yOffset);
 
@@ -219,16 +335,8 @@ namespace StellarV3External.Menus
 
                 new GUISingleButton("Close Doors", () =>
                 {
-                    DoorManager.CloseAllDoors();
+                    Murder4Utils.CloseAllDoors();
                     PopupUtils.HudMessage("Murder 4", "Closed All Doors", 3f);
-                }, yOffset);
-
-                yOffset += 35;
-
-                new GUISingleButton("Lock Doors", () =>
-                {
-                    DoorManager.LockAllDoors();
-                    PopupUtils.HudMessage("Murder 4", "Locked All Doors", 3f);
                 }, yOffset);
 
                 yOffset += 35;
@@ -237,61 +345,11 @@ namespace StellarV3External.Menus
                 {
                     GameObject gameObject = GameObject.Find("Game Logic");
                     gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, "KillLocalPlayer");
-                    PopupUtils.HudMessage("Murder 4", "Killed All", 3f);
+                    PopupUtils.HudMessage("Murder 4", "Killed All Players", 3f);
                 }, yOffset);
 
                 yOffset += 35;
             }
-        }
-
-        #region Features
-        public static class DoorManager
-        {
-            private static readonly string[] DoorNames =
-            {
-                "Door", "Door (3)", "Door (4)", "Door (5)", "Door (6)", "Door (7)",
-                "Door (15)", "Door (16)", "Door (8)", "Door (13)", "Door (17)",
-                "Door (18)", "Door (19)", "Door (20)", "Door (21)", "Door (22)",
-                "Door (23)", "Door (14)"
-            };
-
-
-            private static void InteractWithAll(string action, int repeat = 1)
-            {
-                foreach (string doorName in DoorNames)
-                {
-                    Transform target = GameObject.Find(doorName)?.transform.Find($"Door Anim/Hinge/Interact {action}");
-                    if (target == null) continue;
-
-                    UdonBehaviour udon = target.GetComponent<UdonBehaviour>();
-                    if (udon == null) continue;
-
-                    for (int i = 0; i < repeat; i++)
-                        udon.Interact();
-                }
-            }
-
-            public static void CloseAllDoors()
-            {
-                InteractWithAll("close");
-            }
-
-            public static void LockAllDoors()
-            {
-                InteractWithAll("lock");
-            }
-
-            public static void UnlockAllDoors()
-            {
-                InteractWithAll("shove", 4);
-                OpenAllDoors();
-            }
-
-            public static void OpenAllDoors()
-            {
-                InteractWithAll("open");
-            }
-        }
-        #endregion
+		}
     }
 }

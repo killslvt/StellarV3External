@@ -1,7 +1,7 @@
 ﻿using Il2Cpp;
 using UnityEngine;
 
-namespace StellarV3External.SDK.Utils
+namespace StellarV3.SDK.Utils
 {
     internal class PortalUtils
     {

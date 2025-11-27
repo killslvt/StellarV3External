@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using ClarityLib;
-using StellarV3External.SDK;
+using StellarV3.SDK;
 
 namespace StellarV3.Features.Movement
 {

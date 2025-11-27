@@ -1,5 +1,4 @@
 ﻿using Il2CppVRC.SDKBase;
-using StellarV3External.SDK.Utils;
 using UnityEngine;
 
 namespace StellarV3.Features.Movement

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace StellarV3External.GUIButtonAPI
+namespace StellarV3.GUIButtonAPI
 {
     internal class GUIButtonAPI
     {

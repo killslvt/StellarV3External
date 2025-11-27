@@ -1,9 +1,12 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
 using Il2CppExitGames.Client.Photon;
+using Il2CppVRC.SDKBase;
+using Photon.Realtime;
 using System.Reflection;
+using UnityEngine;
 
-namespace StellarV3External.SDK.Patching
+namespace StellarV3.SDK.Patching
 {
     internal static class Patch
     {
@@ -37,7 +40,7 @@ namespace StellarV3External.SDK.Patching
                     GetPatchMethod(nameof(OnPlayerJoinPatch))
                 );
                 ClarityLib.Logs.Log("OnPlayerJoin patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
-                Logging.Log("OnPlayerJoin patch applied successfully", LType.Success);  
+                Logging.Log("OnPlayerJoin patch applied successfully", LType.Success);
             }
             catch (Exception ex)
             {
@@ -73,29 +76,71 @@ namespace StellarV3External.SDK.Patching
                 ClarityLib.Logs.Log("[Patch Error] Failed to patch VRCPlus:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
                 Logging.Log("[Patch Error] Failed to patch VRCPlus:\n" + ex, LType.Error);
             }
+
+            try //On Event
+            {
+                DoPatch(
+                    typeof(LoadBalancingClient).GetMethod(nameof(LoadBalancingClient.OnEvent)),
+                    GetPatchMethod(nameof(OnEventPatch))
+                );
+                ClarityLib.Logs.Log("OnEvent patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("OnEvent patch applied successfully", LType.Success);
+            }
+            catch (Exception ex)
+            {
+                ClarityLib.Logs.Log("[Patch Error] Failed to patch OnEvent:\n" + ex, LType.Error.ToString(), Logging.GetColor(LType.Error), System.ConsoleColor.Cyan, "Stellar");
+                Logging.Log("[Patch Error] Failed to patch OnEvent:\n" + ex, LType.Error);
+            }
         }
 
         #region OnEvent
-        //Not used currently but kept for future reference
+        public static bool antiUdon = false;
+
         private static bool OnEventPatch(EventData __0)
         {
             var data = __0.CustomData;
 
             switch (__0.Code)
             {
-                case 1:
-                    break;
+                case 11: //Prob not needed 
+                case 18:
+                    return !antiUdon;
+                default:
+                    return true;
             }
-
-            return true;
         }
         #endregion
 
         #region OnPlayerJoin/Leave
+        public static bool ownerSpoof = false;
+        public static bool customSpoof = false;
+        public static string customName = "StellarV3";
+        public static VRC_Pickup[] _pickups;
+
         private static void OnPlayerJoinPatch(VRC.Player __0)
         {
             ClarityLib.Logs.Log($"Player joined: {__0.field_Private_APIUser_0.displayName}", LType.Join.ToString(), Logging.GetColor(LType.Join), System.ConsoleColor.Cyan, "Stellar");
             Logging.Log($"Player joined: {__0.field_Private_APIUser_0.displayName}", LType.Join);
+
+            if (__0.field_Private_VRCPlayerApi_0.isLocal)
+            {
+                if (ownerSpoof)
+                {
+                    customSpoof = false;
+                    string ownerSpoof = RoomManager.field_Internal_Static_ApiWorld_0.authorName ?? "DisplayName";
+
+                    __0.field_Private_VRCPlayerApi_0.displayName = ownerSpoof;
+                    __0.field_Private_APIUser_0.displayName = ownerSpoof;
+                }
+                else if (customSpoof)
+                {
+                    ownerSpoof = false;
+                    __0.field_Private_VRCPlayerApi_0.displayName = customName;
+                    __0.field_Private_APIUser_0.displayName = customName;
+                }
+
+                _pickups = Resources.FindObjectsOfTypeAll<VRC_Pickup>().ToArray();
+            }
         }
 
         private static void OnPlayerLeavePatch(VRC.Player __0)

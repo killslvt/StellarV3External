@@ -1,8 +1,8 @@
-﻿using StellarV3External.Features.Visuals;
-using StellarV3External.SDK.Utils;
-using static StellarV3External.GUIButtonAPI.GUIButtonAPI;
+﻿using StellarV3.Features.Visuals;
+using StellarV3.SDK.Utils;
+using static StellarV3.GUIButtonAPI.GUIButtonAPI;
 
-namespace StellarV3External.Menus
+namespace StellarV3.Menus
 {
     internal class VisualGUI
     {

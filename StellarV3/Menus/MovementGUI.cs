@@ -1,21 +1,21 @@
 ﻿using Il2Cpp;
 using Il2CppVRC.SDKBase;
-using StellarV3External.Features.Movement;
-using StellarV3External.SDK.Utils;
+using StellarV3.Features.Movement;
+using StellarV3.SDK.Utils;
 using UnityEngine;
 using VRC;
 using VRC.DataModel;
-using VRC.Networking;
-using static StellarV3External.GUIButtonAPI.GUIButtonAPI;
+using static StellarV3.GUIButtonAPI.GUIButtonAPI;
 
-namespace StellarV3External.Menus
+namespace StellarV3.Menus
 {
     internal class MovementGUI
     {
         #region UpdateShit
         public static void Update()
         {
-            Features.Movement.Flight.Update();
+            Flight.Update();
+            GhostMode.Update();
 
             if (!PlayerUtils.LocalPlayer()) return;
 
@@ -48,7 +48,6 @@ namespace StellarV3External.Menus
         public static bool bunnyHop;
         public static bool headFlipper;
         public static bool speedHack;
-        public static bool ghostmode;
 
         private static NeckRange neck;
 
@@ -150,20 +149,14 @@ namespace StellarV3External.Menus
 
             new GUIToggleButton("Ghost Mode", () =>
             {
-                ghostmode = true;
-                var localPlayer = Networking.LocalPlayer;
-                var serializer = localPlayer.gameObject.GetComponent<FlatBufferNetworkSerializer>();
-                serializer.enabled = false;
+                GhostMode.EnableGhostMode();
                 PopupUtils.HudMessage("Ghost Mode", "Toggled On", 3);
             },
             () =>
             {
-                ghostmode = false;
-                var localPlayer = Networking.LocalPlayer;
-                var serializer = localPlayer.gameObject.GetComponent<FlatBufferNetworkSerializer>();
-                serializer.enabled = true;
+                GhostMode.DisableGhostMode();
                 PopupUtils.HudMessage("Ghost Mode", "Toggled Off", 3);
-            }, () => ghostmode, yOffset);
+            }, () => GhostMode.ghostmode, yOffset);
 
             yOffset += 35;
 

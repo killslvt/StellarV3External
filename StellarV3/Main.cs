@@ -1,17 +1,19 @@
 ﻿using ClarityLib;
+using Il2Cpp;
 using Il2CppVRC.Core;
 using MelonLoader;
 using StellarV3.Features.Exploits;
 using StellarV3.Features.Movement;
-using StellarV3External.Features.Visuals;
-using StellarV3External.Menus;
-using StellarV3External.SDK;
-using StellarV3External.SDK.Utils;
+using StellarV3.Features.Visuals;
+using StellarV3.Menus;
+using StellarV3.SDK;
+using StellarV3.SDK.Patching;
+using StellarV3.SDK.Utils;
 using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3External", "1.1.5", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3", "1.1.6", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -34,15 +36,23 @@ public class Main : MelonMod
     private const int tabSpacing = 10;
     private static readonly string[] tabNames = { "Movement", "Visuals", "World", "Players", "Exploit" };
 
+    public static string folderPath = $"{Environment.CurrentDirectory}/StellarV3";
+    public static string logFolderPath = $"{Environment.CurrentDirectory}/StellarV3/WorldLogs";
+
     public override void OnApplicationStart()
     {
         Logs.Initialize();
         Logging.InitConsole();
 
+        if(!Directory.Exists(folderPath))
+            Directory.CreateDirectory(folderPath);
+        if (!Directory.Exists(logFolderPath))
+            Directory.CreateDirectory(logFolderPath);
+
         ClarityLib.Logs.Log("Init Patches", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         Logging.Log("Init Patches", LType.Info);
 
-        Task.Run(() => StellarV3External.SDK.Patching.Patch.Init());
+        Task.Run(() => StellarV3.SDK.Patching.Patch.Init());
 
         ClarityLib.Logs.Log("Loading StellarV3", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         Logging.Log("Loading StellarV3", LType.Info);
@@ -92,7 +102,7 @@ public class Main : MelonMod
 
         MovementGUI.Update();
         ClickTP.Update();
-        Spoofer.NameSpoof();
+        ItemOrbit.Update();
     }
 
 
@@ -108,13 +118,31 @@ public class Main : MelonMod
     public override void OnSceneWasLoaded(int buildIndex, string sceneName)
     {
         WorldHacksGUI.Initialize(sceneName);
+
+        ClarityLib.Logs.Log($"Scene Loaded {sceneName} Index {buildIndex}", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log($"Scene Loaded {sceneName} Index {buildIndex}", LType.Info);   
     }
 
     #region GUI
     public static string VRCUserName = "";
+    public static string username = "Unknown";
     public static void InfoGUI()
     {
-        string username = VRCUserName ?? "Unknown User";
+        if (!string.IsNullOrEmpty(VRCUserName))
+        {
+            username = VRCUserName;
+        }
+
+        string spooferStatus = "";
+        if (Patch.customSpoof)
+        {
+            spooferStatus = $"Custom Spoofed: {Patch.customName}";
+        }
+        else if (Patch.ownerSpoof)
+        {
+            string author = RoomManager.field_Internal_Static_ApiWorld_0?.authorName ?? "null";
+            spooferStatus = $"Owner Spoofed: {author}";
+        }
 
         GUIStyle textStyle = new GUIStyle
         {
@@ -123,9 +151,18 @@ public class Main : MelonMod
             richText = true
         };
 
-        GUI.Label(new Rect(10, 10, 300, 30), $"<b>Stellar V3</b>", textStyle);
+        GUI.Label(new Rect(10, 10, 300, 30), "<b>Stellar V3</b>", textStyle);
         GUI.Label(new Rect(10, 30, 300, 30), $"<b>User: {username}</b>", textStyle);
-        GUI.Label(new Rect(10, 50, 300, 30), $"<b>Made By 4gottenmemory</b>", textStyle);
+
+        int y = 50;
+
+        if (!string.IsNullOrEmpty(spooferStatus))
+        {
+            GUI.Label(new Rect(10, y, 300, 30), $"<b>{spooferStatus}</b>", textStyle);
+            y += 20;
+        }
+
+        GUI.Label(new Rect(10, y, 300, 30), "<b>Made By 4gottenmemory</b>", textStyle);
     }
 
     public static void MainGUI()
@@ -155,11 +192,11 @@ public class Main : MelonMod
 
         switch (selectedTab)
         {
-            case 0: StellarV3External.Menus.MovementGUI.Menu(); break;
-            case 1: StellarV3External.Menus.VisualGUI.Menu(); break;
-            case 2: StellarV3External.Menus.WorldHacksGUI.Menu(); break;
-            case 3: StellarV3External.Menus.PlayersGUI.Menu(); break;
-            case 4: StellarV3External.Menus.ExploitGUI.Menu(); break;
+            case 0: StellarV3.Menus.MovementGUI.Menu(); break;
+            case 1: StellarV3.Menus.VisualGUI.Menu(); break;
+            case 2: StellarV3.Menus.WorldHacksGUI.Menu(); break;
+            case 3: StellarV3.Menus.PlayersGUI.Menu(); break;
+            case 4: StellarV3.Menus.ExploitGUI.Menu(); break;
         }
 
         GUI.DragWindow(new Rect(0, 0, windowRect.width, 30));

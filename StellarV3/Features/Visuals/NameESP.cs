@@ -1,7 +1,7 @@
-﻿using StellarV3External.SDK.Utils;
+﻿using StellarV3.SDK.Utils;
 using UnityEngine;
 
-namespace StellarV3External.Features.Visuals
+namespace StellarV3.Features.Visuals
 {
     internal class NameESP
     {

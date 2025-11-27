@@ -1,7 +1,7 @@
 ﻿using Il2Cpp;
 using Il2CppVRC.Localization;
 
-namespace StellarV3External.SDK.Utils
+namespace StellarV3.SDK.Utils
 {
     internal static class PopupUtils
     {

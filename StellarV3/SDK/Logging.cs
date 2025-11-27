@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace StellarV3External.SDK
+namespace StellarV3.SDK
 {
     internal static class Logging
     {
@@ -16,7 +16,7 @@ namespace StellarV3External.SDK
         private const int SW_SHOW = 5;
 
         private const string ConsoleLogsUrl = "https://github.com/killslvt/ClarityLib/releases/download/Beta/ClarityConsole.exe";
-        private const string ClarityPluginUrl = "https://github.com/killslvt/Clarity/releases/download/v1.0.0/Clarity.dll";
+        //private const string ClarityPluginUrl = "https://github.com/killslvt/Clarity/releases/download/v1.0.0/Clarity.dll";
 
         public static void InitConsole()
         {
