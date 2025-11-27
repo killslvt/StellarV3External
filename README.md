@@ -1,4 +1,4 @@
-# Stellar V3  
+# Stellar V3 MelonLoader
 
 This is a **free client** open for anyone to build on and expand.
 
@@ -27,10 +27,6 @@ Join the Discord: [Support Server](https://discord.gg/myuWgYP8WS)
 
 ## Note  
 This mod was created out of spite, so don’t expect frequent updates.
-
----
-
-Of course — here’s the clean, copyable version without emojis or markdown styling fluff:
 
 ---
 
