@@ -35,8 +35,11 @@
     <Reference Include="Il2Cppmscorlib">
       <HintPath>Refs\Managed\Il2Cppmscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Il2CppPhoton-DotNet">
-      <HintPath>Refs\Managed\Il2CppPhoton-DotNet.dll</HintPath>
+    <Reference Include="Il2CppPhotonClient">
+      <HintPath>Refs\Managed\Il2CppPhotonClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppUniTask">
+      <HintPath>Refs\Managed\Il2CppUniTask.dll</HintPath>
     </Reference>
     <Reference Include="Il2Cppvrc-oscquery-lib">
       <HintPath>Refs\Managed\Il2Cppvrc-oscquery-lib.dll</HintPath>

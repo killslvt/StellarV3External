@@ -1,7 +1,9 @@
 ﻿using Il2Cpp;
+using Il2CppTMPro;
 using Il2CppVRC.Core;
 using UnityEngine;
 using VRC;
+using VRC.UI.Elements;
 
 namespace StellarV3.SDK.Utils
 {
@@ -12,7 +14,7 @@ namespace StellarV3.SDK.Utils
         public static Color GetTrustColor(this Player player) => VRCPlayer.Method_Public_Static_Color_APIUser_0(player.GetAPIUser());
         public static APIUser GetAPIUser(this Player player) => player.prop_APIUser_0;
 
-        public static Il2CppSystem.Collections.Generic.List<Player> GetAllPlayers()
+        public static Il2CppSystem.Collections.Generic.List<Player>? GetAllPlayers()
         {
             if (PlayerManager.prop_PlayerManager_0 == null)
             {

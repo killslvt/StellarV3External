@@ -1,8 +1,10 @@
 ﻿using HarmonyLib;
 using Il2Cpp;
-using Il2CppExitGames.Client.Photon;
+using Il2CppPhoton.Client;
+using Il2CppVRC.Core;
 using Il2CppVRC.SDKBase;
 using Photon.Realtime;
+using StellarV3.SDK.Utils;
 using System.Reflection;
 using UnityEngine;
 
@@ -66,7 +68,7 @@ namespace StellarV3.SDK.Patching
             try //VRCPlus Spoof (Credit: catnotadog https://discord.gg/fXVn2JJyuA)
             {
                 Instance.Patch(
-                    typeof(VRCPlusStatus).GetProperty(nameof(VRCPlusStatus.prop_Object1PublicIDisposableObAc1BoObObUnique_1_Boolean_0)).GetGetMethod(),
+                    typeof(VRCPlusStatus).GetProperty(nameof(VRCPlusStatus.prop_ReactiveProperty_1_Boolean_0)).GetGetMethod(),
                     postfix: new HarmonyMethod(typeof(Patch), nameof(VRCSpoof)));
                 ClarityLib.Logs.Log("VRCPlus patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
                 Logging.Log("VRCPlus patch applied successfully", LType.Success);
@@ -151,7 +153,7 @@ namespace StellarV3.SDK.Patching
         #endregion
 
         #region VRCPlus Spoof
-        internal static void VRCSpoof(ref Object1PublicIDisposableObAc1BoObObUnique<bool> __result)
+        internal static void VRCSpoof(ref ReactiveProperty<bool> __result)
         {
             __result.field_Protected_T_0 = true;
         }

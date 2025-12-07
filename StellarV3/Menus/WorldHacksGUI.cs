@@ -39,10 +39,10 @@ namespace StellarV3.Menus
             }
         }
 
-        private static GameObject targetGameObject;
-        private static string targetUdonEvent;
-        private static bool eventTarget = false;
-        private static NetworkEventTarget target = NetworkEventTarget.Self;
+        public static GameObject targetGameObject;
+        public static string targetUdonEvent;
+        public static bool eventTarget = false;
+        public static NetworkEventTarget target = NetworkEventTarget.Self;
 
         public static void Menu()
         {

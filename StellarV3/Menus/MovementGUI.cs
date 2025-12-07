@@ -49,7 +49,7 @@ namespace StellarV3.Menus
         public static bool headFlipper;
         public static bool speedHack;
 
-        private static NeckRange neck;
+        public static NeckRange neck;
 
         public static float JumpMultiplier { get; set; } = 5f;
 

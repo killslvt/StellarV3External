@@ -1,6 +1,6 @@
 ﻿using Il2Cpp;
-using Il2CppExitGames.Client.Photon;
-using Photon.Pun;
+using Il2CppPhoton.Client;
+using Photon.Client;
 
 namespace StellarV3.SDK.Utils
 {
