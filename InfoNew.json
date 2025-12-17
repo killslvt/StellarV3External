@@ -2,7 +2,7 @@
   "gameSlug": "vrchat",
   "gameName": "VRChat",
   "mappingUrl": "https://github.com/killslvt/StellarV3External/raw/refs/heads/master/DeobfuscationMap.csv.gz",
-  "mappingFileSHA512": "5ebc7a72b6c085b729250baeb7ed727f8d26306566251cfae9b1a2200c0a6e83f7275820739fc8c591ac0fc0ab7578115aa4c2c22fc5abaaa1630bce4f252e6f",
+  "mappingFileSHA512": "33e8532967c9a2a2f2c1c009dabccb81d25bb26635c232e0c43bd6c84a8272eda7dfabdd355fd32c1f69836c6c0f838a2139a5bdb451f2287d507e2b4aa5b665",
   "forceCpp2IlVersion": null,
   "forceUnhollowerVersion": null,
   "obfuscationRegex": null
