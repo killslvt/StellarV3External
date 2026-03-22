@@ -1,6 +1,6 @@
-﻿using Il2Cpp;
-using Il2CppTMPro;
-using Il2CppVRC.Core;
+﻿
+using TMPro;
+using VRC.Core;
 using UnityEngine;
 using VRC;
 using VRC.UI.Elements;

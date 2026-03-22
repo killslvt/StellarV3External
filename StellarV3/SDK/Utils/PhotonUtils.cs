@@ -1,5 +1,5 @@
-﻿using Il2Cpp;
-using Il2CppPhoton.Client;
+﻿
+using Photon.Client;
 using Photon.Client;
 
 namespace StellarV3.SDK.Utils

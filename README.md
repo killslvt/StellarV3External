@@ -21,7 +21,7 @@ All references can be found inside:
 ---
 
 ## Links  
-Join the Discord: [Support Server](https://discord.gg/myuWgYP8WS)  
+Join the Discord: [Support Server](https://discord.gg/stellar)  
 
 ---
 

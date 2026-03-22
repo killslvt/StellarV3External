@@ -1,6 +1,6 @@
-﻿using Il2CppVRC.SDKBase;
-using Il2CppVRC.Udon;
-using Il2CppVRC.Udon.Common.Interfaces;
+﻿using VRC.SDKBase;
+using VRC.Udon;
+using VRC.Udon.Common.Interfaces;
 using MelonLoader;
 using StellarV3.Features.Exploits;
 using StellarV3.Menus.Worlds;

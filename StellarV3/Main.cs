@@ -1,6 +1,6 @@
 ﻿using ClarityLib;
-using Il2Cpp;
-using Il2CppVRC.Core;
+
+using VRC.Core;
 using MelonLoader;
 using StellarV3.Features.Exploits;
 using StellarV3.Features.Movement;
@@ -13,7 +13,7 @@ using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3", "1.1.6", "4gottenmemory", "https://discord.gg/myuWgYP8WS")]
+[assembly: MelonInfo(typeof(Main), "StellarV3", "1.1.8", "privatesource", "https://discord.gg/stellar")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -58,8 +58,8 @@ public class Main : MelonMod
         Logging.Log("Loading StellarV3", LType.Info);
         MelonCoroutines.Start(WaitForUser());
 
-        ClarityLib.Logs.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
-        Logging.Log("Join The Discord: https://discord.gg/myuWgYP8WS", LType.Info);
+        ClarityLib.Logs.Log("Join The Discord: https://discord.gg/stellar", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Join The Discord: https://discord.gg/stellar", LType.Info);
     }
 
     private static IEnumerator WaitForUser()

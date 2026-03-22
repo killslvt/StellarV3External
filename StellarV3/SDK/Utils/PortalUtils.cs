@@ -1,4 +1,4 @@
-﻿using Il2Cpp;
+﻿
 using UnityEngine;
 
 namespace StellarV3.SDK.Utils

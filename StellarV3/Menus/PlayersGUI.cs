@@ -1,4 +1,4 @@
-﻿using Il2Cpp;
+﻿
 using MelonLoader;
 using StellarV3.Features.Movement;
 using StellarV3.Features.Exploits;

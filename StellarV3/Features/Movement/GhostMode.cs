@@ -1,4 +1,4 @@
-﻿using Il2CppVRC.SDKBase;
+﻿using VRC.SDKBase;
 using StellarV3.Features.Visuals;
 using StellarV3.SDK.Utils;
 using UnityEngine;

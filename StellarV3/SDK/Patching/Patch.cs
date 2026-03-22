@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
-using Il2Cpp;
-using Il2CppPhoton.Client;
-using Il2CppVRC.Core;
-using Il2CppVRC.SDKBase;
+
+using Photon.Client;
+using VRC.Core;
+using VRC.SDKBase;
 using Photon.Realtime;
 using StellarV3.SDK.Utils;
 using System.Reflection;
@@ -38,7 +38,7 @@ namespace StellarV3.SDK.Patching
             try //On Player Join
             {
                 DoPatch(
-                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_PDM_1)),
+                    typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Internal_Void_Player_0)),
                     GetPatchMethod(nameof(OnPlayerJoinPatch))
                 );
                 ClarityLib.Logs.Log("OnPlayerJoin patch applied successfully", LType.Success.ToString(), Logging.GetColor(LType.Success), System.ConsoleColor.Cyan, "Stellar");
@@ -65,7 +65,7 @@ namespace StellarV3.SDK.Patching
                 Logging.Log("[Patch Error] Failed to patch OnPlayerLeave:\n" + ex, LType.Error);
             }
 
-            try //VRCPlus Spoof (Credit: catnotadog https://discord.gg/fXVn2JJyuA)
+            try //VRCPlus Spoof (Credit: catnotadog)
             {
                 Instance.Patch(
                     typeof(VRCPlusStatus).GetProperty(nameof(VRCPlusStatus.prop_ReactiveProperty_1_Boolean_0)).GetGetMethod(),

@@ -1,4 +1,4 @@
-﻿using Il2CppVRC.SDKBase;
+﻿using VRC.SDKBase;
 using UnityEngine;
 
 namespace StellarV3.Features.Movement

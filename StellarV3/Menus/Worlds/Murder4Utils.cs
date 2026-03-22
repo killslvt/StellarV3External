@@ -1,4 +1,4 @@
-﻿using Il2CppVRC.Udon;
+﻿using VRC.Udon;
 using UnityEngine;
 
 namespace StellarV3.Menus.Worlds

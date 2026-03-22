@@ -1,5 +1,5 @@
-﻿using Il2Cpp;
-using Il2CppVRC.Localization;
+﻿
+using VRC.Localization;
 
 namespace StellarV3.SDK.Utils
 {
