@@ -162,7 +162,7 @@ public class Main : MelonMod
             y += 20;
         }
 
-        GUI.Label(new Rect(10, y, 300, 30), "<b>Made By 4gottenmemory</b>", textStyle);
+        GUI.Label(new Rect(10, y, 300, 30), "<b>Made By privatesource</b>", textStyle);
     }
 
     public static void MainGUI()
@@ -170,7 +170,7 @@ public class Main : MelonMod
         if (!showMenu) return;
 
         GUI.backgroundColor = Color.black;
-        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)DrawWindow, "<color=#FFFFFF>Stellar V3</color>  <color=#FFFFFF>https://discord.gg/myuWgYP8WS</color>");
+        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)DrawWindow, "<color=#FFFFFF>Stellar V3</color>  <color=#FFFFFF>https://discord.gg/stellar</color>");
     }
 
     private static void DrawWindow(int id)
