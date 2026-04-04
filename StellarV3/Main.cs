@@ -76,12 +76,12 @@ public class Main : MelonMod
 
         ClarityLib.Logs.Log("Quick Menu found", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
         Logging.Log("Quick Menu found", LType.Info);
-        if (GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad"))
+        if (GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Body/Menu_QM_Launchpad"))
         {
             ClarityLib.Logs.Log("Cleaning QM", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
             Logging.Log("Cleaning QM", LType.Info);
-            GameObject gameObject1 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/Carousel_Banners");
-            GameObject gameObject2 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/VRC+_Banners");
+            GameObject gameObject1 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Body/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/Carousel_Banners");
+            GameObject gameObject2 = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Body/Menu_QM_Launchpad/ScrollRect/Viewport/VerticalLayoutGroup/VRC+_Banners");
             gameObject1.SetActive(false);
             gameObject2.SetActive(false);
 
