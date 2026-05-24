@@ -13,7 +13,7 @@ using System.Collections;
 using UnityEngine;
 using VRC;
 
-[assembly: MelonInfo(typeof(Main), "StellarV3", "1.1.8", "privatesource", "https://discord.gg/stellar")]
+[assembly: MelonInfo(typeof(Main), "StellarV3", "1.1.8", "privatesource", "https://discord.gg/76ZaKYeu7W")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 public class Main : MelonMod
@@ -58,8 +58,8 @@ public class Main : MelonMod
         Logging.Log("Loading StellarV3", LType.Info);
         MelonCoroutines.Start(WaitForUser());
 
-        ClarityLib.Logs.Log("Join The Discord: https://discord.gg/stellar", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
-        Logging.Log("Join The Discord: https://discord.gg/stellar", LType.Info);
+        ClarityLib.Logs.Log("Join The Discord: https://discord.gg/76ZaKYeu7W", LType.Info.ToString(), Logging.GetColor(LType.Info), System.ConsoleColor.Cyan, "Stellar");
+        Logging.Log("Join The Discord: https://discord.gg/76ZaKYeu7W", LType.Info);
     }
 
     private static IEnumerator WaitForUser()
@@ -170,7 +170,7 @@ public class Main : MelonMod
         if (!showMenu) return;
 
         GUI.backgroundColor = Color.black;
-        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)DrawWindow, "<color=#FFFFFF>Stellar V3</color>  <color=#FFFFFF>https://discord.gg/stellar</color>");
+        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)DrawWindow, "<color=#FFFFFF>Stellar V3</color>  <color=#FFFFFF>https://discord.gg/76ZaKYeu7W</color>");
     }
 
     private static void DrawWindow(int id)
