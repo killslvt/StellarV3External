@@ -27,7 +27,7 @@ Join the Discord: [Support Server](https://discord.gg/76ZaKYeu7W)
 
 ## Note  
 This mod was created out of spite, so don’t expect frequent updates.
-
+Refs will not be posted publicly on here anymore
 ---
 
 ## How to Download & Use
