@@ -1,3 +1,8 @@
+# WARNGING
+
+This source will no longer be getting updated and releases will only be posted in the discord.
+Please join the [Discord](https://discord.gg/76ZaKYeu7W)
+
 # Stellar V3 MelonLoader
 
 This is a **free client** open for anyone to build on and expand.
