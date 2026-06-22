@@ -1,4 +1,4 @@
-# WARNGING
+# ALERT
 
 This source will no longer be getting updated and releases will only be posted in the discord.
 Please join the [Discord](https://discord.gg/76ZaKYeu7W)
